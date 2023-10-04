@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mezcla de Vectores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Mezcla de Vectores</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Ingrese el Primer Vector (ascendente):</h3>
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" id="elemento1">
+                    <button class="btn btn-primary" onclick="agregarElemento(vector1, 'elemento1')">Agregar</button>
+                    <button class="btn btn-danger" onclick="borrarVector('vector1', vector1)">Borrar</button>
+                </div>
+                <ul id="vector1" class="list-group">
+                    <!-- Espacio para mostrar los elementos del vector 1 -->
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h3>Ingrese el Segundo Vector (ascendente):</h3>
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" id="elemento2">
+                    <button class="btn btn-primary" onclick="agregarElemento(vector2, 'elemento2')">Agregar</button>
+                    <button class="btn btn-danger" onclick="borrarVector('vector2', vector2)">Borrar</button>
+                </div>
+                <ul id="vector2" class="list-group">
+                    <!-- Espacio para mostrar los elementos del vector 2 -->
+                </ul>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <button class="btn btn-primary" onclick="mezclarVectores()">Mezclar y Ordenar</button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <h3>Resultado de la Mezcla:</h3>
+                <ul id="resultado" class="list-group">
+                    <!-- Espacio para mostrar el resultado -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let vector1 = [];
+        let vector2 = [];
+
+        function agregarElemento(vector, elementoId) {
+            const elementoInput = document.getElementById(elementoId);
+            const elemento = parseInt(elementoInput.value);
+
+            if (!isNaN(elemento) && (vector.length === 0 || elemento >= vector[vector.length - 1])) {
+                vector.push(elemento);
+                elementoInput.value = '';
+
+                const ul = document.getElementById(vector === vector1 ? 'vector1' : 'vector2');
+                const li = document.createElement("li");
+                li.classList.add("list-group-item");
+                li.textContent = elemento;
+                ul.appendChild(li);
+            } else {
+                alert('Por favor, ingrese un elemento válido (mayor o igual al anterior).');
+            }
+        }
+
+        function borrarVector(ulId, vector) {
+            document.getElementById(ulId).innerHTML = '';
+            vector.length = 0;
+        }
+
+        function mezclarVectores() {
+            // Validar que ambos vectores tengan al menos un elemento
+            if (vector1.length === 0 || vector2.length === 0) {
+                alert("Ambos vectores deben tener al menos un elemento.");
+                return;
+            }
+
+            // Mezclar y ordenar los vectores
+            const resultado = [];
+            let i = 0;
+            let j = 0;
+
+            while (i < vector1.length && j < vector2.length) {
+                if (vector1[i] < vector2[j]) {
+                    resultado.push(vector1[i]);
+                    i++;
+                } else {
+                    resultado.push(vector2[j]);
+                    j++;
+                }
+            }
+
+            resultado.push(...vector1.slice(i));
+            resultado.push(...vector2.slice(j));
+
+            // Mostrar el resultado
+            const ulResultado = document.getElementById("resultado");
+            ulResultado.innerHTML = ""; // Limpiar contenido anterior
+
+            resultado.forEach(elemento => {
+                const li = document.createElement("li");
+                li.classList.add("list-group-item");
+                li.textContent = elemento;
+                ulResultado.appendChild(li);
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+</html>
